@@ -54,6 +54,8 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
     taglist_square_size, theme.fg_normal
 )
 
+theme.taglist_spacing = dpi(12)
+
 -- Variables set for theming notifications:
 -- notification_font
 -- notification_[bg|fg]
