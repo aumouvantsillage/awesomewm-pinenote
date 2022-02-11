@@ -464,10 +464,6 @@ awful.rules.rules = {
      }
     },
 
-	{ rule = { name = "Onboard" },
-	  properties = { focusable = false }
-	},
-
     -- Floating clients.
     { rule_any = {
         instance = {
@@ -503,6 +499,12 @@ awful.rules.rules = {
     { rule_any = {type = { "normal", "dialog" }
       }, properties = { titlebars_enabled = true }
     },
+
+    { rule = { name = "Onboard" },
+	  properties = { focusable = false,
+                     titlebars_enabled = false
+                   }
+	},
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },

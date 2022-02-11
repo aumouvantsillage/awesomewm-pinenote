@@ -17,6 +17,8 @@ pacman  -S awesome lightdm lightdm-gtk-greeter xf86-input-evdev \
            inter-font hack-font
 ```
 
+Install KOReader from provided `PKGBUILD` in folder `koreader`.
+
 Setup autologin (as root)
 -------------------------
 
@@ -66,6 +68,15 @@ Run desktop environment
 systemctl enable --now lightdm
 ```
 
+Additional settings
+-------------------
+
+On-screen keyboard: use high contrast theme.
+
+```
+gsettings set org.onboard theme '/usr/share/onboard/themes/HighContrast.theme'
+```
+
 TODO
 ----
 
@@ -73,7 +84,3 @@ TODO
 * Menu
 * Status bar
 * Launcher
-* Touch support
-* Default applications
-  * Xournalpp
-  * KOReader
