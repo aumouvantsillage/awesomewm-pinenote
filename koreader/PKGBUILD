@@ -1,0 +1,22 @@
+# Based on the PKGBUILD for the AMD64 architecture (by zaoqi <zaomir@outlook.com>)
+
+pkgname=koreader-bin
+pkgver=2022.01
+pkgrel=1
+pkgdesc="An ebook reader application supporting PDF, DjVu, EPUB, FB2 and many more formats, running on Cervantes, Kindle, Kobo, PocketBook and Android devices"
+arch=("aarch64")
+url="https://github.com/koreader/koreader/"
+license=('AGPL3')
+depends=('sdl2' 'fonts-noto-hinted' 'fonts-droid-fallback')
+source=(
+  "https://github.com/koreader/koreader/releases/download/v${pkgver}/koreader-${pkgver}-arm64.deb")
+sha512sums=('08cb97ce420c8297044a6758beb79605f560164ff21c67c394e3ad9251709eb9a6fa82c0f0c5ac0afe207c513192ad2d1c39f93912c0234b3d7d3e740f082a95')
+
+build() {
+  mkdir -p "${srcdir}/dpkgdir"
+  tar -xvf data.tar.xz -C "${srcdir}/dpkgdir"
+}
+
+package() {
+  cp -r "${srcdir}/dpkgdir"/* "${pkgdir}"
+}
