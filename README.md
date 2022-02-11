@@ -1,4 +1,10 @@
 
+Credits
+-------
+
+Background image used in theme: [Knowledge enlightenment](https://unsplash.com/photos/J4kK8b9Fgj8)
+by Olia Gozha, published under the [Unsplash licence](https://unsplash.com/license).
+
 Base OS and packages
 --------------------
 
