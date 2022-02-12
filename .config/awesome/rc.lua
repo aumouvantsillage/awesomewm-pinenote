@@ -170,62 +170,73 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
-local mybatteryicon = wibox.widget.textbox(utf8.char(0xe1a6)) -- Battery unknown
-mybatteryicon.font = "MaterialIcons Regular 24"
+-- Battery status.
+local function battery_widget(dev)
+    local icon_widget = wibox.widget.textbox(utf8.char(0xe1a6)) -- Battery unknown
+    icon_widget.font = "MaterialIcons Regular 24"
 
-local mybattery = awful.widget.watch(
-    { awful.util.shell, "-c", "upower -i /org/freedesktop/UPower/devices/battery_rk817_battery | sed -n '/present/,/icon-name/p'" },
-    30,
-    function(widget, stdout)
-        local bat_now = {
-            present      = "N/A",
-            state        = "N/A",
-            warninglevel = "N/A",
-            energy       = "N/A",
-            energyfull   = "N/A",
-            energyrate   = "N/A",
-            voltage      = "N/A",
-            percentage   = "N/A",
-            capacity     = "N/A",
-            icon         = "N/A"
-        }
+    local level_widget = awful.widget.watch(
+        { awful.util.shell, "-c", "upower -i /org/freedesktop/UPower/devices/" .. dev .. " | sed -n '/present/,/icon-name/p'" },
+        30,
+        function(widget, stdout)
+            local bat_now = {
+                present      = "N/A",
+                state        = "N/A",
+                warninglevel = "N/A",
+                energy       = "N/A",
+                energyfull   = "N/A",
+                energyrate   = "N/A",
+                voltage      = "N/A",
+                percentage   = "N/A",
+                capacity     = "N/A",
+                icon         = "N/A"
+            }
 
-        for k, v in string.gmatch(stdout, '([%a]+[%a|-]+):%s*([%a|%d]+[,|%a|%d]-)') do
-            if     k == "present"       then bat_now.present      = v
-            elseif k == "state"         then bat_now.state        = v
-            elseif k == "warning-level" then bat_now.warninglevel = v
-            elseif k == "energy"        then bat_now.energy       = string.gsub(v, ",", ".") -- Wh
-            elseif k == "energy-full"   then bat_now.energyfull   = string.gsub(v, ",", ".") -- Wh
-            elseif k == "energy-rate"   then bat_now.energyrate   = string.gsub(v, ",", ".") -- W
-            elseif k == "voltage"       then bat_now.voltage      = string.gsub(v, ",", ".") -- V
-            elseif k == "percentage"    then bat_now.percentage   = tonumber(v)              -- %
-            elseif k == "capacity"      then bat_now.capacity     = string.gsub(v, ",", ".") -- %
-            elseif k == "icon-name"     then bat_now.icon         = v
+            for k, v in string.gmatch(stdout, '([%a]+[%a|-]+):%s*([%a|%d]+[,|%a|%d]-)') do
+                if     k == "present"       then bat_now.present      = v
+                elseif k == "state"         then bat_now.state        = v
+                elseif k == "warning-level" then bat_now.warninglevel = v
+                elseif k == "energy"        then bat_now.energy       = string.gsub(v, ",", ".") -- Wh
+                elseif k == "energy-full"   then bat_now.energyfull   = string.gsub(v, ",", ".") -- Wh
+                elseif k == "energy-rate"   then bat_now.energyrate   = string.gsub(v, ",", ".") -- W
+                elseif k == "voltage"       then bat_now.voltage      = string.gsub(v, ",", ".") -- V
+                elseif k == "percentage"    then bat_now.percentage   = tonumber(v)              -- %
+                elseif k == "capacity"      then bat_now.capacity     = string.gsub(v, ",", ".") -- %
+                elseif k == "icon-name"     then bat_now.icon         = v
+                end
+            end
+
+            widget:set_text(bat_now.percentage .. "%")
+            if bat_now.state == "charging" then
+                icon_widget.text = utf8.char(0xe1a3) -- Battery charging full
+            elseif bat_now.percentage < 14 then
+                icon_widget.text = utf8.char(0xebdc) -- Battery 0 bar
+            elseif bat_now.percentage < 28 then
+                icon_widget.text = utf8.char(0xebd9) -- Battery 1 bar
+            elseif bat_now.percentage < 42 then
+                icon_widget.text = utf8.char(0xebe0) -- Battery 2 bar
+            elseif bat_now.percentage < 56 then
+                icon_widget.text = utf8.char(0xebdd) -- Battery 3 bar
+            elseif bat_now.percentage < 70 then
+                icon_widget.text = utf8.char(0xebe2) -- Battery 4 bar
+            elseif bat_now.percentage < 84 then
+                icon_widget.text = utf8.char(0xebd4) -- Battery 5 bar
+            elseif bat_now.percentage < 98 then
+                icon_widget.text = utf8.char(0xebd2) -- Battery 6 bar
+            else
+                icon_widget.text = utf8.char(0xe1a4) -- Battery full
             end
         end
+    )
 
-        widget:set_text(bat_now.percentage .. "%")
-        if bat_now.state == "charging" then
-            mybatteryicon.text = utf8.char(0xe1a3) -- Battery charging full
-        elseif bat_now.percentage < 14 then
-            mybatteryicon.text = utf8.char(0xebdc) -- Battery 0 bar
-        elseif bat_now.percentage < 28 then
-            mybatteryicon.text = utf8.char(0xebd9) -- Battery 1 bar
-        elseif bat_now.percentage < 42 then
-            mybatteryicon.text = utf8.char(0xebe0) -- Battery 2 bar
-        elseif bat_now.percentage < 56 then
-            mybatteryicon.text = utf8.char(0xebdd) -- Battery 3 bar
-        elseif bat_now.percentage < 70 then
-            mybatteryicon.text = utf8.char(0xebe2) -- Battery 4 bar
-        elseif bat_now.percentage < 84 then
-            mybatteryicon.text = utf8.char(0xebd4) -- Battery 5 bar
-        elseif bat_now.percentage < 98 then
-            mybatteryicon.text = utf8.char(0xebd2) -- Battery 6 bar
-        else
-            mybatteryicon.text = utf8.char(0xe1a4) -- Battery full
-        end
-    end
-)
+    return wibox.widget {
+        icon_widget,
+        level_widget,
+        layout = wibox.layout.fixed.horizontal,
+    }
+end
+
+local mybatterystatus = battery_widget("battery_rk817_battery")
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -274,8 +285,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
-            mybatteryicon,
-            mybattery,
+            mybatterystatus,
             wibox.widget.systray(),
             mytextclock,
             s.mylayoutbox,
