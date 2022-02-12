@@ -15,6 +15,8 @@ https://github.com/manjaro-arm/quartz64-bsp-images/releases
 pacman  -S awesome lightdm lightdm-gtk-greeter xf86-input-evdev upower \
            xterm nano xournalpp onboard \
            inter-font hack-font
+           
+yay -S ttf-material-icons-git
 ```
 
 Install KOReader from provided `PKGBUILD` in folder `koreader`.

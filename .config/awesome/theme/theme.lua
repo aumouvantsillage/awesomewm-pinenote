@@ -123,7 +123,7 @@ theme.layout_cornerse   = theme_path .. "/layouts/cornerse.png"
 
 -- Generate Awesome icon:
 theme.awesome_icon = theme_assets.awesome_icon(
-    theme.menu_height, theme.bg_focus, theme.fg_focus
+    theme.menu_height, theme.bg_normal, theme.fg_normal
 )
 
 -- Define the icon theme for application icons. If not set then the icons

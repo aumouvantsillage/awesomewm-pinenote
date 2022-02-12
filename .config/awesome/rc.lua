@@ -48,6 +48,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(config_dir .. "/theme/theme.lua")
+local theme = beautiful.get()
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
@@ -169,6 +170,9 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+local mybatteryicon = wibox.widget.textbox(utf8.char(0xe1a6)) -- Battery unknown
+mybatteryicon.font = "MaterialIcons Regular 24"
+
 local mybattery = awful.widget.watch(
     { awful.util.shell, "-c", "upower -i /org/freedesktop/UPower/devices/battery_rk817_battery | sed -n '/present/,/icon-name/p'" },
     30,
@@ -200,8 +204,26 @@ local mybattery = awful.widget.watch(
             end
         end
 
-        -- customize here
-        widget:set_text("Bat: " .. bat_now.percentage .. "% " .. bat_now.state)
+        widget:set_text(bat_now.percentage .. "%")
+        if bat_now.state == "charging" then
+            mybatteryicon.text = utf8.char(0xe1a3) -- Battery charging full
+        elseif bat_now.percentage < 14 then
+            mybatteryicon.text = utf8.char(0xebdc) -- Battery 0 bar
+        elseif bat_now.percentage < 28 then
+            mybatteryicon.text = utf8.char(0xebd9) -- Battery 1 bar
+        elseif bat_now.percentage < 42 then
+            mybatteryicon.text = utf8.char(0xebe0) -- Battery 2 bar
+        elseif bat_now.percentage < 56 then
+            mybatteryicon.text = utf8.char(0xebdd) -- Battery 3 bar
+        elseif bat_now.percentage < 70 then
+            mybatteryicon.text = utf8.char(0xebe2) -- Battery 4 bar
+        elseif bat_now.percentage < 84 then
+            mybatteryicon.text = utf8.char(0xebd4) -- Battery 5 bar
+        elseif bat_now.percentage < 98 then
+            mybatteryicon.text = utf8.char(0xebd2) -- Battery 6 bar
+        else
+            mybatteryicon.text = utf8.char(0xe1a4) -- Battery full
+        end
     end
 )
 
@@ -252,6 +274,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
+            mybatteryicon,
             mybattery,
             wibox.widget.systray(),
             mytextclock,
