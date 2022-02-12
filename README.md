@@ -106,7 +106,7 @@ echo N > /sys/class/backlight/backlight_warm/brightness
 Suspend:
 
 ```
-systemctl suspend
+systemctl suspend -i
 # Press power button to exit suspend mode
 ```
 
@@ -128,7 +128,7 @@ In `~/.Xresources`:
 
 In `/etc/systemd/logind.conf.d/power-button-suspend.conf`:
 
-* Suspend when pressing the power button.
+* Suspend when the power button is pressed.
 
 TODO
 ----
