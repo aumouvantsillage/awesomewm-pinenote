@@ -24,7 +24,8 @@ Install Archlinux using [Dorian Rudolph's instructions](https://github.com/Doria
 I am using pgwipeout's kernel and the [Minimal Manjaro rootfs for Quartz64](https://github.com/manjaro-arm/quartz64-bsp-images/releases).
 
 ```
-pacman  -S awesome lightdm lightdm-gtk-greeter xf86-input-evdev upower \
+pacman  -S awesome lightdm lightdm-gtk-greeter xf86-input-evdev \
+           upower light \
            xterm nano xournalpp onboard firefox \
            inter-font hack-font
 
@@ -115,6 +116,13 @@ echo N > /sys/class/backlight/backlight_cool/brightness
 
 cat /sys/class/backlight/backlight_warm/max_brightness
 echo N > /sys/class/backlight/backlight_warm/brightness
+
+# or
+
+light -s sysfs/backlight/backlight_cool -G    # Get
+light -s sysfs/backlight/backlight_cool -S N  # Set
+light -s sysfs/backlight/backlight_cool -O    # Save
+light -s sysfs/backlight/backlight_cool -I    # Restore
 ```
 
 Suspend:
@@ -127,7 +135,7 @@ systemctl suspend -i
 E-Ink panel refresh:
 
 ```
-echo 1 | sudo tee /sys/module/rockchip_ebc/parameters/force_refresh
+echo 1 > /sys/module/rockchip_ebc/parameters/force_refresh
 ```
 
 Custom settings
