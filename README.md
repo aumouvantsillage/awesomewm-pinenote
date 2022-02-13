@@ -8,8 +8,8 @@ by Olia Gozha, published under the [Unsplash licence](https://unsplash.com/licen
 Base OS and packages
 --------------------
 
-Install the Minimal Manjaro rootfs for Quartz64 from:
-https://github.com/manjaro-arm/quartz64-bsp-images/releases
+Install Archlinux using [Dorian Rudolph's instructions](https://github.com/DorianRudolph/pinenotes).
+I am using pgwipeout's kernel and the [Minimal Manjaro rootfs for Quartz64](https://github.com/manjaro-arm/quartz64-bsp-images/releases).
 
 ```
 pacman  -S awesome lightdm lightdm-gtk-greeter xf86-input-evdev upower \
@@ -19,7 +19,7 @@ pacman  -S awesome lightdm lightdm-gtk-greeter xf86-input-evdev upower \
 yay -S ttf-material-icons-git
 ```
 
-Install KOReader from provided `PKGBUILD` in folder `koreader`.
+You can install KOReader from the `PKGBUILD` provided in folder `koreader`.
 
 Setup autologin (as root)
 -------------------------
@@ -28,7 +28,7 @@ Add user to `autologin` group:
 
 ```
 groupadd autologin
-gpasswd -a guillaume autologin
+gpasswd -a your-user-name autologin
 ```
 
 Configure LightDM. Edit `/etc/lightdm/lightdm.conf`.
@@ -38,7 +38,7 @@ Configure LightDM. Edit `/etc/lightdm/lightdm.conf`.
 ...
 xserver-command=X -nocursor
 ...
-autologin-user=guillaume
+autologin-user=your-user-name
 ...
 ```
 
