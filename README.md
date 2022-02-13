@@ -13,9 +13,9 @@ https://github.com/manjaro-arm/quartz64-bsp-images/releases
 
 ```
 pacman  -S awesome lightdm lightdm-gtk-greeter xf86-input-evdev upower \
-           xterm nano xournalpp onboard \
+           xterm nano xournalpp onboard firefox \
            inter-font hack-font
-           
+
 yay -S ttf-material-icons-git
 ```
 
@@ -59,7 +59,7 @@ EndSection
 Section "InputClass"
         Identifier    "RotateTouch"
         MatchProduct    "w9013"
-        Option    "TransformationMatrix" "-1 0 1 0 -1 1 0 0 1"
+        #Option    "TransformationMatrix" "-1 0 1 0 -1 1 0 0 1"
 EndSection
 ```
 

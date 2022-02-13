@@ -1,0 +1,1 @@
+setxkbmap fr-latin9
