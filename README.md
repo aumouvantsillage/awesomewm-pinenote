@@ -128,6 +128,14 @@ In `~/.Xresources`:
 
 * Font configuration for Xterm.
 
+In `~/.dmrc`:
+
+* Set session to AwesomeWM.
+
+In `~/.profile`:
+
+* Set keyboard layout.
+
 In `/etc/systemd/logind.conf.d/power-button-suspend.conf`:
 
 * Suspend when the power button is pressed.
@@ -136,5 +144,7 @@ TODO
 ----
 
 * Suspend when closing the smart cover. Resume when opening it.
-* Status bar
+* More info in status bar
+  * Wi-Fi
+  * Stylus battery
 * Launcher
