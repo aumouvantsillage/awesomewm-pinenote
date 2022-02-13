@@ -7,6 +7,10 @@ My setup uses the following software:
 * Window manager: Awesome.
 * On-screen keyboard: Onboard.
 
+![Awesome menu](screenshots/awesomewm-pinenote-menu.jpg)
+
+![Xterm and Onboard](screenshots/awesomewm-pinenote-xterm.jpg)
+
 Credits
 -------
 
