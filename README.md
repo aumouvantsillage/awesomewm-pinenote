@@ -1,5 +1,5 @@
 
-These are my notes and configuration files for running Linux on the [PINE64's PineNote](https://www.pine64.org/pinenote/).
+These are my notes and configuration files for running Linux on [PINE64's PineNote](https://www.pine64.org/pinenote/).
 My setup uses the following software:
 
 * Distribution: Manjaro ARM.
