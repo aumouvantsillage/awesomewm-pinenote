@@ -1,4 +1,12 @@
 
+These are my notes and configuration files for running Linux on the [PINE64's PineNote](https://www.pine64.org/pinenote/).
+My setup uses the following software:
+
+* Distribution: Manjaro ARM.
+* Display manager: LightDM.
+* Window manager: Awesome.
+* On-screen keyboard: Onboard.
+
 Credits
 -------
 
@@ -88,7 +96,7 @@ Battery:
 cat /sys/class/power_supply/rk817-battery/charge_now
 cat /sys/class/power_supply/rk817-battery/charge_full
 cat /sys/class/power_supply/rk817-battery/charge_full_design
-cat /sys/class/power_supply/rk817-battery/status # Charging/Discharging
+cat /sys/class/power_supply/rk817-battery/status
 
 # or
 
