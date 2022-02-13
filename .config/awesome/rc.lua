@@ -171,7 +171,7 @@ end
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
--- Battery status.
+-- Battery status. -------------------------------------------------------------
 local function battery_widget(dev)
     local icon_widget = wibox.widget.textbox(utf8.char(0xe1a6)) -- Battery unknown
     icon_widget.font = "MaterialIcons Regular 24"
@@ -239,6 +239,27 @@ end
 
 local mybatterystatus = battery_widget("battery_rk817_battery")
 
+-- e-ink refresh button --------------------------------------------------------
+local myrefreshbtn = wibox.widget.textbox(utf8.char(0xe028)) -- Loop
+myrefreshbtn.font = "MaterialIcons Regular 24"
+
+local refresh_status = false
+
+myrefreshbtn:connect_signal("button::press", function (lx, ly, btn, mods, fwr)
+    file = io.open("/sys/module/rockchip_ebc/parameters/force_refresh", "w")
+    file:write("1")
+    io.close(file)
+    -- Force a refresh now by altering the icon.
+    if refresh_status then
+        myrefreshbtn.text = utf8.char(0xe028) -- Loop
+    else
+        myrefreshbtn.text = utf8.char(0xe86a) -- Cached
+    end
+    refresh_status = not refresh_status
+end)
+
+--------------------------------------------------------------------------------
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
@@ -286,6 +307,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
+            myrefreshbtn,
             mybatterystatus,
             wibox.widget.systray(),
             mytextclock,

@@ -124,6 +124,12 @@ systemctl suspend -i
 # Press power button to exit suspend mode
 ```
 
+E-Ink panel refresh:
+
+```
+echo 1 | sudo tee /sys/module/rockchip_ebc/parameters/force_refresh
+```
+
 Custom settings
 ---------------
 
@@ -134,6 +140,7 @@ In `~/.config/awesome/rc.lua`:
 * Define tag list.
 * Add menu entries for applications and on-screen keyboard (Onboard).
 * Disable titlebar for Onboard and make it non-focusable.
+* Add button to force a refresh of the e-ink panel.
 * Add battery status.
 
 In `~/.Xresources`:
@@ -152,6 +159,10 @@ In `/etc/systemd/logind.conf.d/power-button-suspend.conf`:
 
 * Suspend when the power button is pressed.
 
+In `/etc/udev/rules.d/90-pinenote.rules` (based on the rules file from SXMO):
+
+* Brightness and refresh controls: grant write access to `video` group.
+
 TODO
 ----
 
@@ -159,4 +170,5 @@ TODO
 * More info in status bar
   * Wi-Fi
   * Stylus battery
+* UI for frontlight control
 * Launcher

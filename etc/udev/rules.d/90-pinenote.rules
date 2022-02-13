@@ -1,0 +1,19 @@
+# lisgd requires /dev/input/touchscreen
+ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event[0-9]*", ENV{ID_INPUT_TOUCHSCREEN}=="1", MODE:="0666", SYMLINK+="input/touchscreen"
+
+ACTION=="add", SUBSYSTEM=="input", ENV{ID_PATH}=="platform-vibrator", MODE:="0666"
+
+# make stylus readable
+ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event[0-9]*", ENV{ID_INPUT_TABLET}=="1", MODE:="0666"
+# fix bug with pinenote touchscreen matrix
+#ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event[0-9]*", ENV{ID_INPUT_TABLET}=="1", ENV{LIBINPUT_CALIBRATION_MATRIX}="-1 0 1 0 -1 1"
+#ACTION=="add|change", SUBSYSTEM=="input", KERNEL=="event[0-9]*", ENV{ID_PATH}=="platform-fe5a0000.i2c", ENV{LIBINPUT_CALIBRATION_MATRIX}="-1 0 1 0 -1 1"
+
+# taken from https://github.com/haikarainen/light/blob/master/90-backlight.rules
+ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chgrp video /sys/class/leds/%k/brightness"
+ACTION=="add", SUBSYSTEM=="leds", RUN+="/bin/chmod g+w /sys/class/leds/%k/brightness"
+
+ACTION=="add", SUBSYSTEM=="platform", RUN+="/bin/chgrp video /sys/module/rockchip_ebc/parameters/force_refresh"
+ACTION=="add", SUBSYSTEM=="platform", RUN+="/bin/chmod g+w /sys/module/rockchip_ebc/parameters/force_refresh"
