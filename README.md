@@ -55,27 +55,6 @@ autologin-user=your-user-name
 ...
 ```
 
-Configure Xorg (as root)
-------------------------
-
-Create `/etc/X11/xorg.conf.d/pinenote.conf` with:
-
-```
-Section "InputClass"
-        Identifier "evdev touchscreen"
-        MatchProduct "tt21000"
-        MatchIsTouchscreen "on"
-        #MatchDevicePath "/dev/input/event5"
-        Driver        "evdev"
-EndSection
-
-Section "InputClass"
-        Identifier    "RotateTouch"
-        MatchProduct    "w9013"
-        #Option    "TransformationMatrix" "-1 0 1 0 -1 1 0 0 1"
-EndSection
-```
-
 Run desktop environment
 -----------------------
 
@@ -174,9 +153,12 @@ In `/etc/udev/rules.d/90-pinenote.rules` (based on the rules file from SXMO):
 TODO
 ----
 
-* Suspend when closing the smart cover. Resume when opening it.
+* Suspend:
+  * Suspend when closing the smart cover. Wake up when opening it.
+  * Turn frontlight off on suspend, restore on wake-up.
 * More info in status bar
   * Wi-Fi
   * Stylus battery
+  * Suspend status indicator.
 * UI for frontlight control
-* Launcher
+* Application launcher
