@@ -258,6 +258,34 @@ myrefreshbtn:connect_signal("button::press", function (lx, ly, btn, mods, fwr)
     refresh_status = not refresh_status
 end)
 
+-- Suspend status --------------------------------------------------------------
+
+local mysuspendstatus = wibox.widget.textbox() -- Mode standby
+mysuspendstatus.font = "MaterialIcons Regular 24"
+
+local lgi = require("lgi")
+local Gio = lgi.require("Gio")
+
+-- Based on https://github.com/awesomeWM/awesome/issues/344#issuecomment-328354719
+local function listen_for_suspend()
+    local bus = lgi.Gio.bus_get_sync(Gio.BusType.SYSTEM)
+    local sender = "org.freedesktop.login1"
+    local interface = "org.freedesktop.login1.Manager"
+    local object = "/org/freedesktop/login1"
+    local member = "PrepareForSleep"
+    bus:signal_subscribe(sender, interface, member, object, nil, Gio.DBusSignalFlags.NONE,
+        function(bus, sender, object, interface, signal, params)
+            if params[1] then
+                -- Suspend.
+                mysuspendstatus.text = utf8.char(0xf037)
+            else
+                -- Wake-up.
+                mysuspendstatus.text = ""
+            end
+        end)
+end
+
+listen_for_suspend()
 --------------------------------------------------------------------------------
 
 awful.screen.connect_for_each_screen(function(s)
@@ -306,6 +334,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            mysuspendstatus,
             mykeyboardlayout,
             myrefreshbtn,
             mybatterystatus,

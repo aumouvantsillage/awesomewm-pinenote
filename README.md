@@ -34,7 +34,7 @@ yay -S ttf-material-icons-git
 
 You can install KOReader from the `PKGBUILD` provided in folder `koreader`.
 
-Setup autologin (as root)
+Setup autologin
 -------------------------
 
 Add user to `autologin` group:
@@ -127,6 +127,7 @@ In `~/.config/awesome/rc.lua`:
 * Define tag list.
 * Add menu entries for applications and on-screen keyboard (Onboard).
 * Disable titlebar for Onboard and make it non-focusable.
+* Add suspend status indicator.
 * Add button to force a refresh of the e-ink panel.
 * Add battery status.
 
@@ -159,6 +160,5 @@ TODO
 * More info in status bar
   * Wi-Fi
   * Stylus battery
-  * Suspend status indicator.
 * UI for frontlight control
 * Application launcher
