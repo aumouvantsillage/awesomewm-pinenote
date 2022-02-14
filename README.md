@@ -120,36 +120,22 @@ echo 1 > /sys/module/rockchip_ebc/parameters/force_refresh
 Custom settings
 ---------------
 
-In `~/.config/awesome/rc.lua`:
-
-* Use custom theme (`.config/awesome/theme`).
-* Restrict available layouts.
-* Define tag list.
-* Add menu entries for applications and on-screen keyboard (Onboard).
-* Disable titlebar for Onboard and make it non-focusable.
-* Add suspend status indicator.
-* Add button to force a refresh of the e-ink panel.
-* Add battery status.
-
-In `~/.Xresources`:
-
-* Font configuration for Xterm.
-
-In `~/.dmrc`:
-
-* Set session to AwesomeWM.
-
-In `~/.profile`:
-
-* Set keyboard layout.
-
-In `/etc/systemd/logind.conf.d/power-button-suspend.conf`:
-
-* Suspend when the power button is pressed.
-
-In `/etc/udev/rules.d/90-pinenote.rules` (based on the rules file from SXMO):
-
-* Brightness and refresh controls: grant write access to `video` group.
+* `~/.config/awesome/rc.lua`:
+    * Use custom theme (`.config/awesome/theme`).
+    * Restrict available layouts.
+    * Define tag list.
+    * Add menu entries for applications and on-screen keyboard (Onboard).
+    * Disable titlebar for Onboard and make it non-focusable.
+    * Add suspend status indicator.
+    * Add button to force a refresh of the e-ink panel.
+    * Add battery status.
+* `~/.config/awesome/hooks/`: Scripts to turn off/on the frontlight on suspend/resume.
+* `~/.Xresources`: Font configuration for Xterm.
+* `~/.dmrc`: Set session to AwesomeWM.
+* `~/.profile`: Set keyboard layout.
+* `/etc/systemd/logind.conf.d/power-button-suspend.conf`: Suspend when the power button is pressed.
+* `/etc/udev/rules.d/90-pinenote.rules` (based on the rules file from SXMO): grant write access to `video` group for brightness and refresh controls.
+* `/etc/X11/xorg.conf.d/90-pinenote.conf`: Xorg configuration for the touchscreen and stylus (uncomment `TransformationMatrix` if needed).
 
 TODO
 ----
