@@ -258,6 +258,20 @@ myrefreshbtn:connect_signal("button::press", function (lx, ly, btn, mods, fwr)
     refresh_status = not refresh_status
 end)
 
+-- Frontlight --------------------------------------------------------------
+
+local function light_save()
+    awful.spawn("light -s sysfs/backlight/backlight_cool -O")
+    awful.spawn("light -s sysfs/backlight/backlight_warm -O")
+    awful.spawn("light -s sysfs/backlight/backlight_cool -S 0")
+    awful.spawn("light -s sysfs/backlight/backlight_warm -S 0")
+end
+
+local function light_restore()
+    awful.spawn("light -s sysfs/backlight/backlight_cool -I")
+    awful.spawn("light -s sysfs/backlight/backlight_warm -I")
+end
+
 -- Suspend status --------------------------------------------------------------
 
 local mysuspendstatus = wibox.widget.textbox() -- Mode standby
@@ -278,9 +292,11 @@ local function listen_for_suspend()
             if params[1] then
                 -- Suspend.
                 mysuspendstatus.text = utf8.char(0xf037)
+                light_save()
             else
                 -- Wake-up.
                 mysuspendstatus.text = ""
+                light_restore()
             end
         end)
 end
