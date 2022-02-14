@@ -90,7 +90,7 @@ myawesomemenu = {
    { "manual", terminal .. " -e man awesome" },
    { "edit config", editor_cmd .. " " .. awesome.conffile },
    { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end },
+   --{ "quit", function() awesome.quit() end },
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu },
@@ -263,6 +263,9 @@ end)
 local function light_save()
     awful.spawn("light -s sysfs/backlight/backlight_cool -O")
     awful.spawn("light -s sysfs/backlight/backlight_warm -O")
+end
+
+local function light_off()
     awful.spawn("light -s sysfs/backlight/backlight_cool -S 0")
     awful.spawn("light -s sysfs/backlight/backlight_warm -S 0")
 end
@@ -282,21 +285,22 @@ local Gio = lgi.require("Gio")
 
 -- Based on https://github.com/awesomeWM/awesome/issues/344#issuecomment-328354719
 local function listen_for_suspend()
-    local bus = lgi.Gio.bus_get_sync(Gio.BusType.SYSTEM)
-    local sender = "org.freedesktop.login1"
-    local interface = "org.freedesktop.login1.Manager"
-    local object = "/org/freedesktop/login1"
-    local member = "PrepareForSleep"
-    bus:signal_subscribe(sender, interface, member, object, nil, Gio.DBusSignalFlags.NONE,
+    -- Frontlight management is delegated to scripts in the hooks/ subfolder.
+    awful.spawn.easy_async(config_dir .. "/hooks/suspend-loop.sh",
+        function (stdout, stderr, exitreason, exitcode)
+            io.stderr:write("suspend-loop.sh exited (" .. exitreason .. " " .. exitcode .. ")")
+        end)
+
+    local bus = Gio.bus_get_sync(Gio.BusType.SYSTEM)
+
+    bus:signal_subscribe("org.freedesktop.login1", "org.freedesktop.login1.Manager", "PrepareForSleep", "/org/freedesktop/login1", nil, Gio.DBusSignalFlags.NONE,
         function(bus, sender, object, interface, signal, params)
             if params[1] then
-                -- Suspend.
+                -- Suspend: show "Standby Mode" icon.
                 mysuspendstatus.text = utf8.char(0xf037)
-                light_save()
             else
-                -- Wake-up.
+                -- Wake-up: remove icon.
                 mysuspendstatus.text = ""
-                light_restore()
             end
         end)
 end
