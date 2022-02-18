@@ -10,3 +10,5 @@ light -s sysfs/backlight/backlight_warm -O
 # Turn backlight off.
 light -s sysfs/backlight/backlight_cool -S 0
 light -s sysfs/backlight/backlight_warm -S 0
+
+awesome-client "on_suspend()"

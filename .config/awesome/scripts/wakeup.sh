@@ -6,3 +6,5 @@ dbus-monitor --system --profile "interface='org.freedesktop.login1.Manager',memb
 # Restore backlight settings.
 light -s sysfs/backlight/backlight_cool -I
 light -s sysfs/backlight/backlight_warm -I
+
+awesome-client "on_wakeup()"

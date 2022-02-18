@@ -277,35 +277,24 @@ end
 
 -- Suspend status --------------------------------------------------------------
 
-local mysuspendstatus = wibox.widget.textbox() -- Mode standby
+local mysuspendstatus = wibox.widget.textbox()
 mysuspendstatus.font = "MaterialIcons Regular 24"
 
-local lgi = require("lgi")
-local Gio = lgi.require("Gio")
-
--- Based on https://github.com/awesomeWM/awesome/issues/344#issuecomment-328354719
-local function listen_for_suspend()
-    -- Frontlight management is delegated to scripts in the hooks/ subfolder.
-    awful.spawn.easy_async(config_dir .. "/hooks/suspend-loop.sh",
-        function (stdout, stderr, exitreason, exitcode)
-            io.stderr:write("suspend-loop.sh exited (" .. exitreason .. " " .. exitcode .. ")")
-        end)
-
-    local bus = Gio.bus_get_sync(Gio.BusType.SYSTEM)
-
-    bus:signal_subscribe("org.freedesktop.login1", "org.freedesktop.login1.Manager", "PrepareForSleep", "/org/freedesktop/login1", nil, Gio.DBusSignalFlags.NONE,
-        function(bus, sender, object, interface, signal, params)
-            if params[1] then
-                -- Suspend: show "Standby Mode" icon.
-                mysuspendstatus.text = utf8.char(0xf037)
-            else
-                -- Wake-up: remove icon.
-                mysuspendstatus.text = ""
-            end
-        end)
+-- These functions are global because they are meant to be called
+-- remotely by awesome-client.
+function on_suspend()
+    mysuspendstatus.text = utf8.char(0xf037) -- Mode standby
 end
 
-listen_for_suspend()
+function on_wakeup()
+    mysuspendstatus.text = ""
+end
+
+awful.spawn.easy_async(config_dir .. "/scripts/suspend-loop.sh",
+    function (stdout, stderr, exitreason, exitcode)
+        io.stderr:write("suspend-loop.sh exited (" .. exitreason .. " " .. exitcode .. ")")
+end)
+
 --------------------------------------------------------------------------------
 
 awful.screen.connect_for_each_screen(function(s)
